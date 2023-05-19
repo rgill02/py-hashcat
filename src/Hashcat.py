@@ -37,6 +37,14 @@ class Hashcat:
 							 text=True, cwd=self.exe_dir)
 		return res.stdout.strip()[1:]
 
+	############################################################################
+	def update(self):
+		"""
+		Updates to latest version if necessary. There should be no other 
+		instance of hashcat running while calling this
+		"""
+		fm.update_hashcat()
+
 ################################################################################
 ###                                Test Code                                 ###
 ################################################################################
