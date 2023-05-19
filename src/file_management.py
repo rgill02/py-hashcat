@@ -13,6 +13,7 @@ from pyunpack import Archive
 
 #Our imports
 from utils import what_os
+import Hashcat
 
 ################################################################################
 ###                                Constants                                 ###
@@ -72,6 +73,16 @@ def hashcat_exe_path():
 		raise RuntimeError("Unknown operating system!")
 
 ################################################################################
+def does_hashcat_exist():
+	"""
+	Determines if an instance of hashcat exists
+
+	:return: True if it does, False if not
+	:rtype: bool
+	"""
+	return os.path.exists(hashcat_exe_path())
+
+################################################################################
 def determine_latest_hashcat_version():
 	"""
 	Determines the latest hashcat version by pulling from their website
@@ -127,6 +138,20 @@ def download_latest_hashcat():
 	os.remove(hashcat_7z_loc)
 
 ################################################################################
+def update_hashcat():
+	"""
+	Updates hashcat to the latest version if necessary. Make sure hashcat is 
+	not running before you call this
+	"""
+	latest_ver = determine_latest_hashcat_version()
+
+	hc = Hashcat.Hashcat()
+	my_ver = hc.get_version()
+
+	if my_ver != latest_ver:
+		download_latest_hashcat()
+
+################################################################################
 ###                                Test Code                                 ###
 ################################################################################
 if __name__ == "__main__":
@@ -138,6 +163,8 @@ if __name__ == "__main__":
 	print("\nDownloading latest hashcat version...")
 	download_latest_hashcat()
 	print("Latest hashcat downloaded")
+
+
 
 ################################################################################
 ###                               End of File                                ###
